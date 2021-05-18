@@ -1,22 +1,26 @@
-<template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+<template lang="pug">
+  #app
+   .start-game-container
+   .initial-bet-container
+   .gameplay-container
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import StartGameComponent from './components/StartGameComponent.vue'
+import InitialBetComponent from './components/InitialBetComponent.vue'
+import GamePlayComponent from './components/GamePlayComponent.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    StartGameComponent,
+    InitialBetComponent,
+    GamePlayComponent
   }
 }
 </script>
 
-<style>
+<style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
