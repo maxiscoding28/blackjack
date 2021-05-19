@@ -17,15 +17,15 @@
     #game-play-container.full-width.flex-center
       #users-hand-container.flex-center.half-width.full-height
         .user-label.flex-center Player
-        .current-score.flex-center 21
+        .current-score.flex-center {{getCurrentUserScore}}
         .card-container.flex-center.full-width
-          .card(v-for="card in this.usersHand" :key="card.key") {{card.value}}, {{card.suit}}
+          .card.black-font(v-for="card in this.usersHand" :key="card.key") {{card.value}}, {{card.suit}}
             .card-content
       #dealers-hand-container.flex-center.half-width.full-height
         .dealer-label.flex-center Dealer
-        .current-score.flex-center 21
+        .current-score.flex-center {{getCurrentDealerScore}}
         .card-container.flex-center.full-width
-          .card(v-for="card in this.dealersHand" :key="card.key") 
+          .card.black-font(v-for="card in this.dealersHand" :key="card.key") 
             .card-content(v-if="card.facedown") XX
             .card-content(v-else) {{card.value}}, {{card.suit}}
 </template>
@@ -48,6 +48,14 @@ export default {
       dealersHand: [],
     }
   },
+  computed: {
+    getCurrentUserScore() {
+      return cardLogic.computeScores(this.usersHand);
+    },
+    getCurrentDealerScore() {
+      return cardLogic.computeScores(this.dealersHand);
+    } 
+  },
   methods: {
     setCurrentBet(value) {
       this.currentBet = value;
@@ -55,29 +63,12 @@ export default {
 
       setTimeout(this.initialDealCards, 1200)
     },
-    getRandomCard(numOfCards, whichHand) {
-        let initialHand = []
-
-        for (let i = 0; i < numOfCards; i++) {
-          if (whichHand == 'dealer'){
-            initialHand.push(cardLogic.pickRandomCard(cardLogic.deckArray));
-          }
-          else {
-            initialHand.push(cardLogic.pickRandomCard(cardLogic.deckArray));
-          }
-        }
-
-        // one card facedown for dealer
-        if ( whichHand == 'dealer') {
-          initialHand[1].facedown = true;
-        }
-          
-        return initialHand;
-      
-    },
     initialDealCards() {
-      this.dealersHand = this.getRandomCard(2, 'dealer')
-      this.usersHand = this.getRandomCard(2)
+      console.log(cardLogic.deckArray.length)
+      this.dealersHand = cardLogic.getRandomCard(2, 'dealer')
+      console.log(cardLogic.deckArray.length)
+      this.usersHand = cardLogic.getRandomCard(2)
+      console.log(cardLogic.deckArray.length)
     }
   },
   components:{
@@ -88,22 +79,6 @@ export default {
 </script>
 
 <style lang="scss">
-.full-width {
-  width: 100%;
-}
-
-.half-width {
-  width: 50%;
-}
-
-.full-height {
-  height: 100%;
-}
-
-.black-font {
-  color: black;
-  font-weight: bold
-}
 
 #game-play-component {
   flex-direction: column;
@@ -148,7 +123,6 @@ export default {
           flex-basis: 20%;
           border: 1px solid white;
           background: white;
-          color: black;
           padding: 3px;
         }
       }

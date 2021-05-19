@@ -5,7 +5,7 @@ function initializeDeck(){
     for (let i = 0; i < 4; i++) {
         let currentSuit = [suits[i]]
         
-        for (let cardValue = 2; cardValue <= 14; cardValue++) {
+        for (let cardValue = 10; cardValue <= 14; cardValue++) {
             let newCard = {}
             
 
@@ -52,10 +52,48 @@ function pickRandomCard(currentDeck){
 }   
 
 
+function getRandomCard(numOfCards, whichHand) {
+    let initialHand = []
+
+    for (let i = 0; i < numOfCards; i++) {
+      if (whichHand == 'dealer'){
+        initialHand.push(cardLogic.pickRandomCard(cardLogic.deckArray));
+      }
+      else {
+        initialHand.push(cardLogic.pickRandomCard(cardLogic.deckArray));
+      }
+    }
+
+    // one card facedown for dealer
+    if ( whichHand == 'dealer') {
+      initialHand[1].facedown = true;
+    }
+      
+    return initialHand;
+}
+
+function computeScores (currentHand) {
+    
+    for (let cardIndex = 0; cardIndex < currentHand.length; cardIndex++) {
+       let currentCard = currentHand[cardIndex];
+
+       if (currentCard.value == "A" ) {
+           let userInputAceValue = "";
+
+           while (userInputAceValue != 11 || userInputAceValue != 1) {
+               userInputAceValue = prompt("Should this Ace be worth 1 or 11?");
+               console.log(userInputAceValue)
+           }
+       }
+    }
+}
+
 
 let cardLogic = {
     deckArray: initializeDeck(),
-    pickRandomCard: pickRandomCard
+    pickRandomCard: pickRandomCard,
+    getRandomCard: getRandomCard,
+    computeScores: computeScores
 }
 
 export default cardLogic;
