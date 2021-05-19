@@ -7,7 +7,10 @@
             :currentBankRoll="currentBankRoll"
             @click="setCurrentBet"
           )
-      #game-message-display.black-font How much would you like to bet this hand?
+      #game-message-display
+        GameMessageDisplayComponent(
+          :betPlaced="betPlaced"
+        )
       #current-bankroll-display
         #current-bet Current Bet <span class="black-font">${{this.currentBet}}</span>
         #total-bankroll Your current dollar total in chips is <span class="black-font">${{currentBankRoll}}.</span>
@@ -15,48 +18,22 @@
       #users-hand-container.flex-center.half-width.full-height
         .user-label.flex-center Player
         .current-score.flex-center 21
-        .card-container.flex-center
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
+        .card-container.flex-center.full-width
+          .card(v-for="card in this.usersHand" :key="card.key") {{card.value}}, {{card.suit}}
+            .card-content
       #dealers-hand-container.flex-center.half-width.full-height
         .dealer-label.flex-center Dealer
         .current-score.flex-center 21
-        .card-container.flex-center
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
-          .card.flex-center Card
+        .card-container.flex-center.full-width
+          .card(v-for="card in this.dealersHand" :key="card.key") 
+            .card-content(v-if="card.facedown") XX
+            .card-content(v-else) {{card.value}}, {{card.suit}}
 </template>
 
 <script>
 import BetInputComponent from './BetInputComponent.vue'
-
+import GameMessageDisplayComponent from './GameMessageDisplayComponent.vue'
+import cardLogic from '../cardLogic';
 export default {
   
   name: 'GamePlayComponent',
@@ -65,16 +42,47 @@ export default {
   },
   data() {
     return {
-      currentBet: 0
+      currentBet: 0,
+      betPlaced: false,
+      usersHand: [],
+      dealersHand: [],
     }
   },
   methods: {
     setCurrentBet(value) {
-      this.currentBet = value
+      this.currentBet = value;
+      this.betPlaced = true;
+
+      setTimeout(this.initialDealCards, 1200)
+    },
+    getRandomCard(numOfCards, whichHand) {
+        let initialHand = []
+
+        for (let i = 0; i < numOfCards; i++) {
+          if (whichHand == 'dealer'){
+            initialHand.push(cardLogic.pickRandomCard(cardLogic.deckArray));
+          }
+          else {
+            initialHand.push(cardLogic.pickRandomCard(cardLogic.deckArray));
+          }
+        }
+
+        // one card facedown for dealer
+        if ( whichHand == 'dealer') {
+          initialHand[1].facedown = true;
+        }
+          
+        return initialHand;
+      
+    },
+    initialDealCards() {
+      this.dealersHand = this.getRandomCard(2, 'dealer')
+      this.usersHand = this.getRandomCard(2)
     }
   },
   components:{
-    BetInputComponent
+    BetInputComponent,
+    GameMessageDisplayComponent
   }
 }
 </script>
@@ -106,6 +114,10 @@ export default {
     justify-content: space-around;
     flex-basis: 10%;
     background-color: #9D7E68;
+
+    #game-message-display {
+      flex-basis: 300px;
+    }
   }
 
   #game-play-container {
@@ -125,18 +137,19 @@ export default {
 
       .card-container {
         display: flex;
-        justify-content: space-between;
-        padding: 0 10px;
+        justify-content: space-around;
+        align-items: flex-start;
         flex-wrap: wrap;
         flex-grow: 1;
-
+        padding: 10px;
 
         .card {
-          height:  20%;
+          height: 20%;
           flex-basis: 20%;
           border: 1px solid white;
           background: white;
           color: black;
+          padding: 3px;
         }
       }
     }

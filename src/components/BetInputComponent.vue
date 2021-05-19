@@ -18,21 +18,33 @@ name: 'BetInputComponent',
         validateInput() {
             let response = this.currentBetInput
 
+            if(response == "") {
+                return;
+            }
+
             if (isNaN(response)) {
-                alert("Your best must be a number value.")
+                alert("Your bet must be a number value.")
+                return;
+            }
+
+            if (response < 0) {
+                alert("Must be a non-negative number.");
+                return;
+            }
+
+            if (response % 1) {
+                alert("Must be a whole number");
                 return;
             }
             
             if (response > this.currentBankRoll) {
-                alert(`Invalid response.\nYour bet cannot exceed the dollar amount of gambling chips you have.\nPlace a bet in an amount less than or equal to your current amount of ${this.currentBankRoll}`)
+                alert(`Your bet cannot exceed the dollar amount of gambling chips you have.\nPlace a bet in an amount less than or equal to your current amount of ${this.currentBankRoll}`)
                 return;
             }
             
             this.currentBetInput = ''
             response = parseInt(response)
             this.$emit('click', response)
-
-
         }
     },
     data() {
