@@ -17,15 +17,15 @@
     #game-play-container.full-width.flex-center
       #users-hand-container.flex-center.half-width.full-height
         .user-label.flex-center Player
-        .current-score.flex-center {{getCurrentUserScore}}
+        .current-score.flex-center 21
         .card-container.flex-center.full-width
-          .card.black-font(v-for="card in this.usersHand" :key="card.key") {{card.value}}, {{card.suit}}
+          .card.black-font.flex-center(v-for="card in this.usersHand" :key="card.key") {{card.value}}, {{card.suit}}
             .card-content
       #dealers-hand-container.flex-center.half-width.full-height
         .dealer-label.flex-center Dealer
-        .current-score.flex-center {{getCurrentDealerScore}}
+        .current-score.flex-center 21
         .card-container.flex-center.full-width
-          .card.black-font(v-for="card in this.dealersHand" :key="card.key") 
+          .card.black-font.flex-center(v-for="card in this.dealersHand" :key="card.key") 
             .card-content(v-if="card.facedown") XX
             .card-content(v-else) {{card.value}}, {{card.suit}}
 </template>
@@ -46,6 +46,7 @@ export default {
       betPlaced: false,
       usersHand: [],
       dealersHand: [],
+      deck: []
     }
   },
   computed: {
@@ -64,11 +65,26 @@ export default {
       setTimeout(this.initialDealCards, 1200)
     },
     initialDealCards() {
-      console.log(cardLogic.deckArray.length)
-      this.dealersHand = cardLogic.getRandomCard(2, 'dealer')
-      console.log(cardLogic.deckArray.length)
-      this.usersHand = cardLogic.getRandomCard(2)
-      console.log(cardLogic.deckArray.length)
+      let randomIndexes = [];
+      let dealerInitialHand = [];
+      let userInitialHand = []
+
+      this.deck = cardLogic.deckArray;
+      randomIndexes = cardLogic.pickRandomCardIndex(this.deck.length, 2);
+      
+      for (let i = 0; i < 2; i++) {
+        dealerInitialHand.push(this.deck.splice(randomIndexes[i], 1)[0]);
+      }
+
+      dealerInitialHand[1].facedown = true;
+
+      this.dealersHand = dealerInitialHand;
+      randomIndexes = cardLogic.pickRandomCardIndex(this.deck.length, 2);
+      
+      for (let i = 0; i < 2; i++) {
+        userInitialHand.push(this.deck.splice(randomIndexes[i], 1)[0]);
+      }
+      this.usersHand = userInitialHand;
     }
   },
   components:{
