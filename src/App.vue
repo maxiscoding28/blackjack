@@ -26,8 +26,8 @@ export default {
   },
   data(){
     return {
-      gameStarted: true,
-      initialBuyInSet: true,
+      gameStarted: false,
+      initialBuyInSet: false,
       currentBankRoll: 200
     }
   },
