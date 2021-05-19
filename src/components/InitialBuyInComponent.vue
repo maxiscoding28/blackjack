@@ -16,6 +16,7 @@ export default {
 
       if (response < 0 || response % 5 !== 0 || response > this.MAX_BUY_IN ) {
         alert(`Invalid response.\nEnter in a buy in of ${this.MAX_BUY_IN} or less.\nA buy in must also be in ${this.MINIMUM_BUY_IN} chip increments`)
+        this.initialBuyInInput = ""
         return
       }
 

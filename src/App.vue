@@ -28,7 +28,7 @@ export default {
     return {
       gameStarted: false,
       initialBuyInSet: false,
-      currentBankRoll: 0
+      currentBankRoll: 200
     }
   },
   components: {
