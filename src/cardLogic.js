@@ -53,8 +53,24 @@ function pickRandomCardIndex(currentDeckLength, numberofCards){
     return randomDeckIndexes;
 }   
 
-function computeScores () {
+function computeScores (hand) {
+    let totalScore = 0;
 
+    for (let i = 0; i < hand.length; i++) {
+        let score = 0;
+        
+        if (hand[i] === 'J' || hand[i] === 'Q' || hand[i] === 'K') {
+            score = 10
+        }
+        else {
+            score = parseInt(hand[i]);
+        }
+        // add to score
+        totalScore = totalScore + score;
+    }
+
+    // return score
+    return totalScore;
 }
 
 
