@@ -1,12 +1,15 @@
 <template lang="pug">
   #game-controls-component
-    button.hit-button Hit
+    button(@click="hitAddCard").hit-button Hit
     button.stay-button Stay
 </template>
 
 <script>
 export default {
-    name: "GameControlsComponent"
+    name: "GameControlsComponent",
+    props: {
+        hitAddCard: Function
+    },
 }
 </script>
 

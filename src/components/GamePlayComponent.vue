@@ -8,7 +8,9 @@
             @click="setCurrentBet"
           )
         #game-controls-container(v-else-if="this.betPlaced && this.initialCardsDealt")
-          GameControlsComponent
+          GameControlsComponent(
+            :hitAddCard="hitAddCard"
+          )
       #game-message-display
         GameMessageDisplayComponent(
           :betPlaced="betPlaced"
@@ -67,9 +69,9 @@ export default {
         if (value === 'A') {
           let tempAceValue = ""
 
-        while( tempAceValue != "1" && tempAceValue != "11" ) {
-            tempAceValue = prompt("Choose a Value for your Ace (1 or 11)");
-        }
+            while( tempAceValue != "1" && tempAceValue != "11" ) {
+             tempAceValue = prompt("Choose a Value for your Ace (1 or 11)");
+          }
 
           value = tempAceValue;
         }
@@ -130,6 +132,10 @@ export default {
   
       this.usersHand = userInitialHand;
       this.initialCardsDealt = true;
+    },
+    hitAddCard() {
+      let randomIndex = cardLogic.pickRandomCardIndex(this.deck.length, 1)[0];
+      this.usersHand.push(this.deck.splice(randomIndex, 1)[0]);
     }
   },
   components:{
