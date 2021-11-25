@@ -1,38 +1,28 @@
 <template lang="pug">
   #game-play-component.flex-center.full-width
     #game-controls-container.full-width.flex-center
-      #controls
-        #bet-input-container(v-if="!this.betPlaced")
-          BetInputComponent(
-            :currentBankRoll="currentBankRoll"
-            @click="setCurrentBet"
-          )
-        #game-controls-container(v-else-if="this.betPlaced && this.initialCardsDealt")
-          GameControlsComponent(
-            :hitAddCard="hitAddCard"
-          )
-      #game-message-display
-        GameMessageDisplayComponent(
-          :betPlaced="betPlaced"
-          :initialCardsDealt="initialCardsDealt"
+        GameControlsComponent(
+          :currentBankRoll="currentBankRoll"
+          @click="setCurrentBet"
+          :hitAddCard="hitAddCard"
         )
-      #current-bankroll-display
-        #current-bet Current Bet <span class="black-font">${{this.currentBet}}</span>
-        #total-bankroll Your current dollar total in chips is <span class="black-font">${{currentBankRoll}}.</span>
-    #game-play-container.full-width.flex-center
-      #users-hand-container.flex-center.half-width.full-height
-        .user-label.flex-center Player
-        .current-score.flex-center {{this.getCurrentUserScore}}
-        .card-container.flex-center.full-width
-          .card.black-font.flex-center(v-for="card in this.usersHand" :key="card.key") {{card.value}}, {{card.suit}}
-            .card-content
-      #dealers-hand-container.flex-center.half-width.full-height
-        .dealer-label.flex-center Dealer
-        .current-score.flex-center {{this.getCurrentDealerScore}}
-        .card-container.flex-center.full-width
-          .card.black-font.flex-center(v-for="card in this.dealersHand" :key="card.key") 
-            .card-content(v-if="card.facedown") XX
-            .card-content(v-else) {{card.value}}, {{card.suit}}
+    //-   #current-bankroll-display
+    //-     #current-bet Current Bet <span class="black-font">${{this.currentBet}}</span>
+    //-     #total-bankroll Your current dollar total in chips is <span class="black-font">${{currentBankRoll}}.</span>
+    //- #game-play-container.full-width.flex-center
+    //-   #users-hand-container.flex-center.half-width.full-height
+    //-     .user-label.flex-center Player
+    //-     .current-score.flex-center {{this.getCurrentUserScore}}
+    //-     .card-container.flex-center.full-width
+    //-       .card.black-font.flex-center(v-for="card in this.usersHand" :key="card.key") {{card.value}}, {{card.suit}}
+    //-         .card-content
+    //-   #dealers-hand-container.flex-center.half-width.full-height
+    //-     .dealer-label.flex-center Dealer
+    //-     .current-score.flex-center {{this.getCurrentDealerScore}}
+    //-     .card-container.flex-center.full-width
+    //-       .card.black-font.flex-center(v-for="card in this.dealersHand" :key="card.key") 
+    //-         .card-content(v-if="card.facedown") XX
+    //-         .card-content(v-else) {{card.value}}, {{card.suit}}
 </template>
 
 <script>
@@ -44,7 +34,8 @@ export default {
   
   name: 'GamePlayComponent',
   props: {
-    currentBankRoll: Number
+    currentBankRoll: Number,
+    setGameOver: Function
   },
   data() {
     return {
@@ -54,8 +45,7 @@ export default {
       handOver: false,
       usersHand: [],
       dealersHand: [],
-      deck: [],
-      userBusts: false,
+      deck: []
     }
   },
   computed: {
@@ -71,6 +61,7 @@ export default {
           let tempAceValue = ""
 
             while( tempAceValue != "1" && tempAceValue != "11" ) {
+              // show cards on initial deal
              tempAceValue = prompt("Choose a Value for your Ace (1 or 11)");
           }
 
@@ -79,7 +70,14 @@ export default {
         
         values.push(value);
       }
-      return cardLogic.computeScores(values);
+
+      let score = cardLogic.computeScores(values);
+
+      if (score > 21) {
+        this.setGameOver(true);
+      }
+
+      return score;
     },
     getCurrentDealerScore() {
       let values = []
@@ -108,7 +106,7 @@ export default {
       this.currentBet = value;
       this.betPlaced = true;
 
-      setTimeout(this.initialDealCards, 1200)
+      setTimeout(this.initialDealCards, 1200);
     },
     initialDealCards() {
       let randomIndexes = [];
@@ -135,9 +133,6 @@ export default {
       this.initialCardsDealt = true;
     },
     hitAddCard() {
-      if (this.getCurrentUserScore > 21) {
-        this.userBusts = true;
-      }
       let randomIndex = cardLogic.pickRandomCardIndex(this.deck.length, 1)[0];
       this.usersHand.push(this.deck.splice(randomIndex, 1)[0]);
     }
@@ -158,7 +153,6 @@ export default {
   height: 100%;
 
   #game-controls-container {
-    justify-content: space-around;
     flex-basis: 10%;
     background-color: #9D7E68;
 

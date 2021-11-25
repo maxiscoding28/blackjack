@@ -1,13 +1,14 @@
 <template lang="pug">
   #app
-   #start-game-container.flex-center.full-page(v-if="!this.gameStarted")
-    StartGameComponent(@click="setGameStarted")
-   #initial-bet-container.flex-center.full-page(v-else-if="!this.initialBuyInSet")
-    InitialBuyInComponent(@click="setInitialBuyIn")
-   #gameplay-container.flex-center.full-page(v-else)
-    GamePlayComponent(
-      :currentBankRoll="this.currentBankRoll"
-    )
+    #start-game-container.flex-center.full-page(v-if="!this.gameStarted")
+      StartGameComponent(@click="setGameStarted")
+    #initial-bet-container.flex-center.full-page(v-else-if="!this.initialBuyInSet")
+      InitialBuyInComponent(@click="setInitialBuyIn")
+    #gameplay-container.flex-center.full-page(v-else-if="this.gameStarted")
+      GamePlayComponent(
+        :currentBankRoll="this.currentBankRoll"
+        :setGameOver="this.setGameOver"
+      )
 </template>
 
 <script>
@@ -25,14 +26,10 @@ export default {
       this.initialBuyInSet = boolean;
       this.currentBankRoll = amount;
     },
-    setGameOver(boolean) {
-      this.gameOver = boolean;
-    }
   },
   data(){
     return {
       gameStarted: true,
-      gameOver: false,
       initialBuyInSet: true,
       currentBankRoll: 200
     }
