@@ -54,7 +54,8 @@ export default {
       handOver: false,
       usersHand: [],
       dealersHand: [],
-      deck: []
+      deck: [],
+      userBusts: false,
     }
   },
   computed: {
@@ -134,6 +135,9 @@ export default {
       this.initialCardsDealt = true;
     },
     hitAddCard() {
+      if (this.getCurrentUserScore > 21) {
+        this.userBusts = true;
+      }
       let randomIndex = cardLogic.pickRandomCardIndex(this.deck.length, 1)[0];
       this.usersHand.push(this.deck.splice(randomIndex, 1)[0]);
     }

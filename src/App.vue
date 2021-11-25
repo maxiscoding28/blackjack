@@ -5,7 +5,9 @@
    #initial-bet-container.flex-center.full-page(v-else-if="!this.initialBuyInSet")
     InitialBuyInComponent(@click="setInitialBuyIn")
    #gameplay-container.flex-center.full-page(v-else)
-    GamePlayComponent(:currentBankRoll="this.currentBankRoll")
+    GamePlayComponent(
+      :currentBankRoll="this.currentBankRoll"
+    )
 </template>
 
 <script>
@@ -22,11 +24,15 @@ export default {
     setInitialBuyIn(boolean, amount) {
       this.initialBuyInSet = boolean;
       this.currentBankRoll = amount;
+    },
+    setGameOver(boolean) {
+      this.gameOver = boolean;
     }
   },
   data(){
     return {
       gameStarted: true,
+      gameOver: false,
       initialBuyInSet: true,
       currentBankRoll: 200
     }
