@@ -28,7 +28,7 @@ export default {
   },
   data(){
     return {
-      currentGameState: "GAME_NOT_STARTED",
+      currentGameState: "GAME_STARTED",
       GAME_STATE: {
           GAME_NOT_STARTED: "GAME_NOT_STARTED",
           SET_INITIAL_BUY_IN: "SET_INITIAL_BUY_IN",
@@ -56,24 +56,9 @@ export default {
 
 .full-page {
   height: 100%;
-}
-
-.full-width {
   width: 100%;
 }
 
-.half-width {
-  width: 50%;
-}
-
-.full-height {
-  height: 100%;
-}
-
-.black-font {
-  color: black;
-  font-weight: bold
-}
 
 html, body, #app {
   width: 100%;

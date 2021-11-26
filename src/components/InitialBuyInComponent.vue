@@ -6,16 +6,20 @@
 </template>
 
 <script>
-
-
 export default {
   name: 'InitialBuyInComponent',
   methods: {
     validateInitialBuyIn(){
       let response = this.initialBuyInInput
 
-      if (response < 0 || response % 5 !== 0 || response > this.MAX_BUY_IN ) {
-        alert(`Invalid response.\nEnter in a buy in of ${this.MAX_BUY_IN} or less.\nA buy in must also be in ${this.MINIMUM_BUY_IN} chip increments`)
+      if (response < 0 || response > this.MAX_BUY_IN ) {
+        alert(`Invalid response.\nEnter a buy in between ${this.MINIMUM_BUY_IN} and ${this.MAX_BUY_IN}`);
+        this.initialBuyInInput = ""
+        return
+      }
+
+      if ( response % 5 !== 0 ) {
+        alert(`A buy in must be in ${this.MINIMUM_BUY_IN} chip increments`)
         this.initialBuyInInput = ""
         return
       }
