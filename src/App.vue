@@ -1,13 +1,12 @@
 <template lang="pug">
   #app
-    #start-game-container.flex-center.full-page(v-if="!this.gameStarted")
+    #start-game-container.flex-center.full-page(v-if="currentGameState==GAME_STATE.GAME_NOT_STARTED")
       StartGameComponent(@click="setGameStarted")
-    #initial-bet-container.flex-center.full-page(v-else-if="!this.initialBuyInSet")
+    #initial-bet-container.flex-center.full-page(v-else-if="currentGameState==GAME_STATE.SET_INITIAL_BUY_IN")
       InitialBuyInComponent(@click="setInitialBuyIn")
-    #gameplay-container.flex-center.full-page(v-else-if="this.gameStarted")
+    #gameplay-container.flex-center.full-page(v-else-if="currentGameState==GAME_STATE.GAME_STARTED")
       GamePlayComponent(
-        :currentBankRoll="this.currentBankRoll"
-        :setGameOver="this.setGameOver"
+        :currentBankRoll="currentBankRoll"
       )
 </template>
 
@@ -19,19 +18,24 @@ import GamePlayComponent from './components/GamePlayComponent.vue'
 export default {
   name: 'App',
   methods: {
-    setGameStarted(boolean) {
-      this.gameStarted = boolean;
+    setGameStarted() {
+      this.currentGameState = "SET_INITIAL_BUY_IN";
     },
-    setInitialBuyIn(boolean, amount) {
-      this.initialBuyInSet = boolean;
+    setInitialBuyIn(amount) {
       this.currentBankRoll = amount;
+      this.currentGameState = "GAME_STARTED";
     },
   },
   data(){
     return {
-      gameStarted: true,
-      initialBuyInSet: true,
-      currentBankRoll: 200
+      currentGameState: "GAME_NOT_STARTED",
+      GAME_STATE: {
+          GAME_NOT_STARTED: "GAME_NOT_STARTED",
+          SET_INITIAL_BUY_IN: "SET_INITIAL_BUY_IN",
+          GAME_STARTED: "GAME_STARTED",
+          GAME_OVER: "GAME_OVER"
+      },
+      currentBankRoll: 0
     }
   },
   components: {

@@ -21,7 +21,7 @@ export default {
       }
 
       response = parseInt(response)
-      this.$emit('click', true, response);
+      this.$emit('click', response);
     }
   },
   data() {

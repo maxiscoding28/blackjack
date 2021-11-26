@@ -3,7 +3,7 @@
     #game-controls-container.full-width.flex-center
         GameControlsComponent(
           :currentBankRoll="currentBankRoll"
-          @click="setCurrentBet"
+          :setCurrentBet="setCurrentBet"
           :hitAddCard="hitAddCard"
         )
     //-   #current-bankroll-display

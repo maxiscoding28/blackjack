@@ -2,8 +2,6 @@
   #start-game-component
     #welcome-message Welcome To Blackjack!
     button#start-game(@click="this.startGame") Click Here To Play!
-
-
 </template>
 
 <script>

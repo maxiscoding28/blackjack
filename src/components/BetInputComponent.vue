@@ -6,6 +6,7 @@
         v-model="currentBetInput"
     )
     button(@click="validateInput") Submit
+    #current-bankroll Current Bankroll: {{currentBankRoll}}
 </template>
 
 <script>
@@ -55,4 +56,7 @@ name: 'BetInputComponent',
 }
 </script>
 <style lang="scss">
+#current-bankroll {
+    margin-top: 5px;
+}
 </style>
