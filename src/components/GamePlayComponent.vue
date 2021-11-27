@@ -152,10 +152,14 @@ export default {
 
       if (this.playerScore > 21) {
         this.currentGamePlayState = this.GAMEPLAY_STATE.PAYOUT;
-        setTimeout(() => {
-          alert("Player Busts!");
-        }, 1200);
-        
+        setTimeout(() => alert("Player Busts!"), 1200);
+
+        this.movePayout("dealer");
+      }
+    },
+    movePayout(winner) {
+      if (winner === "dealer") {
+        this.currentPot = 0;
       }
     }
   },
