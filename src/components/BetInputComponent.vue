@@ -25,14 +25,14 @@ export default {
     },
     methods: {
         validateBetInput() {
-            if (isNaN(this.betInputValue) || this.betInputValue % 1 !== 0) {
-                alert("Value must be a whole number.")
+            if (isNaN(this.betInputValue) || this.betInputValue % 1 !== 0 || this.betInputValue <= 0) {
+                alert("Value must be a positive whole number.")
                 return
             }
-            // if (this.betInputValue > this.currentBankRoll) {
-            //     alert(`You only have ${this.currentBankRoll} to bet.`)
-            //     return
-            // }
+            if (this.betInputValue > this.currentBankRoll) {
+                alert(`You only have ${this.currentBankRoll} to bet.`)
+                return
+            }
 
             this.placeBet(parseInt(this.betInputValue));
         }

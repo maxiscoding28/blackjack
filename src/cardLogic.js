@@ -13,6 +13,7 @@ function initializeDeck(){
                 key:`${cardValue}+${currentSuit}`,
                 value: String(cardValue),
                 suit: currentSuit[0],
+                scoreValue: cardValue,
                 facedown: false,
             }
 
@@ -20,15 +21,19 @@ function initializeDeck(){
             if (["11", "12", "13", "14"].indexOf(newCard.value) > -1) {
                 if (newCard.value === "11") {
                     newCard.value = "J"
+                    newCard.scoreValue = 10;
                 }
                 if (newCard.value === "12") {
-                    newCard.value = "Q"
+                    newCard.value = "Q";
+                    newCard.scoreValue = 10;
                 }
                 if (newCard.value === "13") {
                     newCard.value = "K"
+                    newCard.scoreValue = 10;
                 }
                 if (newCard.value === "14") {
                     newCard.value = "A"
+                    newCard.scoreValue = 11;
                 }
             }
             
@@ -51,33 +56,12 @@ function pickRandomCardIndex(currentDeckLength, numberofCards){
     }
     
     return randomDeckIndexes;
-}   
-
-function computeScores (hand) {
-    let totalScore = 0;
-
-    for (let i = 0; i < hand.length; i++) {
-        let score = 0;
-        
-        if (hand[i] === 'J' || hand[i] === 'Q' || hand[i] === 'K') {
-            score = 10
-        }
-        else {
-            score = parseInt(hand[i]);
-        }
-        // add to score
-        totalScore = totalScore + score;
-    }
-
-    // return score
-    return totalScore;
 }
 
 
 let cardLogic = {
     deckArray: initializeDeck(),
     pickRandomCardIndex: pickRandomCardIndex,
-    computeScores: computeScores
 }
 
 export default cardLogic;

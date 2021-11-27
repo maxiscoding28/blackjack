@@ -7,6 +7,7 @@
     #gameplay-container.flex-center.full-page(v-else-if="currentGameState==GAME_STATE.GAME_STARTED")
       GamePlayComponent(
         :currentBankRoll="currentBankRoll"
+        :updateBankRoll="updateBankRoll"
       )
 </template>
 
@@ -25,6 +26,9 @@ export default {
       this.currentBankRoll = amount;
       this.currentGameState = "GAME_STARTED";
     },
+    updateBankRoll(amount) {
+      this.currentBankRoll = this.currentBankRoll + amount;
+    }
   },
   data(){
     return {
@@ -35,7 +39,7 @@ export default {
           GAME_STARTED: "GAME_STARTED",
           GAME_OVER: "GAME_OVER"
       },
-      currentBankRoll: 0
+      currentBankRoll: 100
     }
   },
   components: {
