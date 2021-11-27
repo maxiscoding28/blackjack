@@ -1,6 +1,6 @@
 <template lang="pug">
     #card-component.flex-center(v-if="!cardProperties.facedown")
-        .suit {{cardProperties.suit}}
+        img.suit(:src="getImage()")
         .value {{cardProperties.value}}
     #card-component.flex-center.back-of-deck(v-else)
 </template>
@@ -8,6 +8,11 @@
 export default {
     props: {
         cardProperties: Object
+    },
+    methods: {
+        getImage() {
+            return require(`../../public/${this.cardProperties.suit}.png`);
+        }
     }
 }
 </script>
@@ -21,6 +26,11 @@ export default {
         height: 120px;
         background: white;
         color: black;
+    }
+
+    .suit {
+        width: 25px;
+        height: 25px;
     }
 
     .back-of-deck {
